@@ -3,11 +3,8 @@ from discord.ext import commands
 from discord.utils import get
 from roles import Roles
 
-
-
 PREFIX = '?'
 bot = commands.Bot(command_prefix=PREFIX)
-BIKEHAVEN_ID = 388882163581583360
 
 @bot.command()
 async def ping(ctx):
