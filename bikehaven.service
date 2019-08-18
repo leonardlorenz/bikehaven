@@ -1,0 +1,13 @@
+[Unit]
+Description=Bikehaven Bot
+After=network.target
+
+[Service]
+Type=simple
+User=bikehaven
+ExecStart=/home/bikehaven/bikehaven/venv/bin/python3 /home/bikehaven/bikehaven/src/bot.py
+WorkingDirectory=/home/bikehaven/bikehaven
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
