@@ -1,3 +1,4 @@
+#!/home/bikehaven/bikehaven/venv/bin/python3
 import discord
 from discord.ext import commands
 from discord.utils import get
@@ -16,10 +17,9 @@ async def ping(ctx):
 @bot.command(pass_context=True)
 async def setroles(ctx):
     '''
-    Set roles via {}setroles <role1> <role2>
-    '''.format(PREFIX)
+    Set roles via ?setroles <role1> <role2>
+    '''
     roles_to_add = ctx.message.content.split(' ')[1:]
-    print(roles_to_add)
     # TODO check if user has role already
     for current_role in roles_to_add:
         role_set = False
@@ -34,7 +34,8 @@ async def setroles(ctx):
                 print("\t" + str(this_role))
                 if this_role is not None:
                     try:
-                        await this_member.add_roles(this_member, this_role)
+                        await this_member.add_roles(this_role)
+                        await ctx.send('Added **' + role_name + '** to ' + str(this_member) + '!')
                         role_set = True
                     except Exception as e:
                         print(e)
