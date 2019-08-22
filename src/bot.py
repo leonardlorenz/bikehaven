@@ -18,7 +18,7 @@ async def ping(ctx):
 @bot.command(pass_context=True)
 async def setroles(ctx):
     '''
-    : Set roles via ?setroles <role1> <role2>
+    : Set roles via ?setroles <role1> <role2> <roleN> ...
     '''
     roles_to_add = ctx.message.content.split(' ')[1:]
     for current_role in roles_to_add:
