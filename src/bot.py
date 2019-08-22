@@ -11,14 +11,14 @@ bot = commands.Bot(command_prefix=PREFIX)
 @bot.command()
 async def ping(ctx):
     '''
-    Bot answers with pong
+    : Bot answers with pong
     '''
     await ctx.send('pong')
 
 @bot.command(pass_context=True)
 async def setroles(ctx):
     '''
-    Set roles via ?setroles <role1> <role2>
+    : Set roles via ?setroles <role1> <role2>
     '''
     roles_to_add = ctx.message.content.split(' ')[1:]
     for current_role in roles_to_add:
@@ -46,7 +46,7 @@ async def setroles(ctx):
 @bot.command(pass_context=True)
 async def removeroles(ctx):
     '''
-    remove roles that you don't want anymore
+    : Remove roles that you don't want anymore
     '''
     roles_to_remove = ctx.message.content.split(' ')[1:]
     exception_thrown = False
@@ -84,9 +84,8 @@ async def removeroles(ctx):
 @bot.command(pass_context=True)
 async def showroles(ctx):
     '''
-    Shows all available BMX roles
-    '''
-    msg = ""
+    : Shows all available BMX roles
+    ''' msg = ""
     for role in Roles.ALL_ROLES:
         msg += "> " + role + "\n"
     await ctx.send(msg)
