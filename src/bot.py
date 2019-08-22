@@ -85,7 +85,8 @@ async def removeroles(ctx):
 async def showroles(ctx):
     '''
     : Shows all available BMX roles
-    ''' msg = ""
+    '''
+    msg = ""
     for role in Roles.ALL_ROLES:
         msg += "> " + role + "\n"
     await ctx.send(msg)
