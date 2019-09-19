@@ -43,4 +43,5 @@ class Roles:
             'BoneBreaker'      : '624294552873992213',
             'WeedHead'         : '624294692124884992',
             'RustConnessieur'  : '624294745862307870',
+            'BikeNerd'         : '624331268577820684',
             }
