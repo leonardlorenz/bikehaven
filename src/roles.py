@@ -44,4 +44,5 @@ class Roles:
             'WeedHead'         : '624294692124884992',
             'RustConnessieur'  : '624294745862307870',
             'BikeNerd'         : '624331268577820684',
+            'FlatlandHardliner': '624332038069289002',
             }
