@@ -98,7 +98,14 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     print(message.content)
-    await bot.process_commands(message)
+    if "tenor.com" in message.content:
+        await message.channel.send("You may not send tenor GIFs. Sorry.")
+        await message.delete()
+    if message.channel.name == "botspam":
+        await bot.process_commands(message)
+    else:
+        if message.content.startswith(PREFIX):
+            await message.channel.send("I only work in #botspam.")
 
 @bot.event
 async def on_command_error(ctx, error):
