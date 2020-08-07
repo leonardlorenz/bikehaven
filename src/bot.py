@@ -1,12 +1,25 @@
-#!/home/bikehaven/bikehaven/venv/bin/python3
-import discord
+#/usr/bin/env python
+
 from discord.ext import commands
 from discord.ext.commands import CommandNotFound
 from discord.utils import get
-from roles import Roles
 
-PREFIX = '?'
-bot = commands.Bot(command_prefix=PREFIX)
+with open('token.txt') as f:
+    TOKEN = f.readlines()[0].strip("\n")
+
+ALL_ROLES = {}
+
+def reload_roles():
+    with open('roles.txt') as f:
+        ALL_ROLES.clear()
+        lines = f.readlines()
+        for l in lines:
+            split = l.replace(" ", "").replace("\t", "").split(":")
+            ALL_ROLES[split[0]] = split[1]
+
+PREFIX = 'pls '
+
+bot = commands.Bot(PREFIX)
 
 @bot.command()
 async def ping(ctx):
@@ -16,14 +29,17 @@ async def ping(ctx):
     await ctx.send('pong')
 
 @bot.command(pass_context=True)
-async def setroles(ctx):
+async def set(ctx):
     '''
-    : Set roles via ?setroles role1 role2 roleN ...
+    : Set roles via "pls set role1 role2 roleN ..."
     '''
-    roles_to_add = ctx.message.content.split(' ')[1:]
+    reload_roles()
+
+    roles_to_add = ctx.message.content.split(' ')[2:]
+
     for current_role in roles_to_add:
         role_set = False
-        for role_name, role_id in Roles.ALL_ROLES.items():
+        for role_name, role_id in ALL_ROLES.items():
             if current_role.lower() == role_name.lower():
                 this_member = ctx.message.author
                 this_guild = this_member.guild
@@ -32,7 +48,7 @@ async def setroles(ctx):
                 print("\t" + str(this_guild))
                 print("\t" + str(this_member))
                 print("\t" + str(this_role))
-                if this_role is not None:
+                if this_role:
                     try:
                         await this_member.add_roles(this_role)
                         await ctx.send('Added **' + role_name + '** to ' + str(this_member) + '!')
@@ -44,16 +60,18 @@ async def setroles(ctx):
                 'The role **' + str(current_role) + '** does *not* exist. Use \n> **' + PREFIX + 'showroles**\nto display all the available roles.')
 
 @bot.command(pass_context=True)
-async def removeroles(ctx):
+async def remove(ctx):
     '''
     : Remove roles that you don't want anymore
     '''
-    roles_to_remove = ctx.message.content.split(' ')[1:]
+    reload_roles()
+
+    roles_to_remove = ctx.message.content.split(' ')[2:]
     exception_thrown = False
 
     for current_role in roles_to_remove:
         role_removed = False
-        for role_name, role_id in Roles.ALL_ROLES.items():
+        for role_name, role_id in ALL_ROLES.items():
             if current_role.lower() == role_name.lower():
                 this_member = ctx.message.author
                 this_guild = this_member.guild
@@ -82,18 +100,22 @@ async def removeroles(ctx):
 
 
 @bot.command(pass_context=True)
-async def showroles(ctx):
+async def show(ctx):
     '''
     : Shows all available BMX roles
     '''
+    reload_roles()
+
     msg = ""
-    for role in Roles.ALL_ROLES:
+    for role in ALL_ROLES:
         msg += "> " + role + "\n"
     await ctx.send(msg)
 
 @bot.event
 async def on_ready():
     print("Bot running!")
+    reload_roles()
+    print("Roles loaded!")
 
 @bot.event
 async def on_message(message):
@@ -115,11 +137,4 @@ async def on_command_error(ctx, error):
             'The command **' + ctx.message.content.split(' ')[0] + '** does *not* exist. Use \n> **' + PREFIX + 'help**\nto display all the available commands.')
         return
 
-def read_token():
-    token_file = open('token.txt')
-    token = token_file.readlines()[0].strip("\n")
-    token_file.close()
-    return token
-
-TOKEN = read_token()
 bot.run(TOKEN)
